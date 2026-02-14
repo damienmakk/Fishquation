@@ -1,24 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
-    <title>Fishquation</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fishquation</title>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body class="landing">
+  <header class="topbar landing-topbar">
+    <a class="brand landing-brand" href="index.html" aria-label="Fishquation Home">
+      <img class="brand-logo" src="images/logo.png" alt="Fishquation logo" />
+      <span class="brand-text">Fishquation</span>
+    </a>
 
+    <div class="topbar-right">
+      <button class="lang-btn" type="button" aria-label="Site language" id="langBtn">
+        <span class="lang-label">SITE LANGUAGE: ENGLISH</span>
+        <span class="chev" aria-hidden="true">▾</span>
+      </button>
 
+      <div class="lang-menu" id="langMenu" aria-hidden="true">
+        <button class="lang-item" type="button">English</button>
+        <button class="lang-item" type="button">Spanish</button>
+        <button class="lang-item" type="button">French</button>
+        <button class="lang-item" type="button">German</button>
+      </div>
+    </div>
+  </header>
 
+  <main class="hero landing-hero">
+    <section class="hero-inner landing-hero-inner">
+      <div class="hero-visual landing-hero-visual" aria-hidden="true">
+        <img class="hero-logo" src="images/logo.png" alt="" />
+      </div>
 
+      <div class="hero-copy landing-hero-copy">
+        <h1 class="headline landing-headline">Make math easier, faster, and way more fun.</h1>
 
+       <div class="cta landing-cta">
+          <a class="btn btn-primary landing-btn-primary" href="signup.html">GET STARTED</a>
+          <a class="btn btn-outline landing-btn-outline" href="login.html">I ALREADY HAVE AN ACCOUNT</a>
+        </div>
+      </div>
+    </section>
+  </main>
 
+  <footer class="lang-strip landing-strip">
+    <button class="strip-arrow" type="button" data-dir="-1" aria-label="Scroll left">‹</button>
 
+    <div class="strip-track" id="stripTrack" role="list">
+      <div class="pill" role="listitem"><span class="flag">🧮</span> ADVANCED MATH</div>
+      <div class="pill" role="listitem"><span class="flag">📐</span> BEGINNER MATH</div>
+      <div class="pill" role="listitem"><span class="flag">🐟</span> FUN FISH GAME</div>
+      <div class="pill" role="listitem"><span class="flag">🐋</span> EXPLORE WITH SANDBOX</div>
+      <div class="pill" role="listitem"><span class="flag">🦈</span> CUSTOM SKINS</div>
+      <div class="pill" role="listitem"><span class="flag">👨‍👩‍👧‍👦</span> FAMILY FRIENDLY</div>
+      <div class="pill" role="listitem"><span class="flag">🏆</span> LEADERBOARD</div>
+    </div>
 
+    <button class="strip-arrow" type="button" data-dir="1" aria-label="Scroll right">›</button>
+  </footer>
 
-
-
-    
-    <script src="js/script.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
