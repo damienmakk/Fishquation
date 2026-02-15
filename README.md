@@ -153,6 +153,10 @@ ChatGPT helped with checking all my codes if there was
 any errors or stuff we missed
 
 **Screenshot of generated store code:**
+<img width="2219" height="1352" alt="image" src="https://github.com/user-attachments/assets/5eca2cbe-480a-4f30-9d6f-74caa1f5d894" />
+<img width="1789" height="1015" alt="image" src="https://github.com/user-attachments/assets/a2f6c143-0969-4e48-9c4e-36b4e74aae68" />
+<img width="1905" height="1137" alt="image" src="https://github.com/user-attachments/assets/d59c02db-2963-49bf-a0df-abd496bab73e" />
+
 
 
 
