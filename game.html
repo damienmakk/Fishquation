@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fishquation • Game</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://unpkg.com/@lottiefiles/dotlottie-wc@0.8.11/dist/dotlottie-wc.js" type="module"></script>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      min-height: 100vh;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+      background: #0a1628;
+      color: #fff;
+      overflow: hidden;
+    }
+
+    .game-container {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(180deg, #1a4a52 0%, #0d2a30 100%);
+    }
+
+    .lottie-background {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    #gameCanvas {
+      display: block;
+      max-width: 100%;
+      max-height: 100%;
+      background: transparent;
+      position: relative;
+      z-index: 1;
+    }
+
+    .game-ui {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 20px;
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    .ui-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .ui-left {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .target-display {
+      background: rgba(10, 22, 40, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .target-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .target-number {
+      font-size: 32px;
+      font-weight: 900;
+      color: #fff;
+    }
+
+    .current-display {
+      background: rgba(152, 16, 250, 0.2);
+      border: 2px solid #9810fa;
+      border-radius: 16px;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .current-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+    }
+
+    .current-number {
+      font-size: 32px;
+      font-weight: 900;
+      color: #9810fa;
+    }
+
+    .ui-right {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-end;
+    }
+
+    .timer-display {
+      background: rgba(10, 22, 40, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 12px 20px;
+      font-size: 24px;
+      font-weight: 900;
+      min-width: 80px;
+      text-align: center;
+    }
+
+    .controls-hint {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(10, 22, 40, 0.9);
+      border: 2px solid rgba(255, 255, 255, 0.2);
+      border-radius: 16px;
+      padding: 16px 24px;
+      font-size: 14px;
+      font-weight: 600;
+      color: rgba(255, 255, 255, 0.7);
+      pointer-events: none;
+      z-index: 10;
+    }
+  </style>
+</head>
+<body>
+  <div class="game-container">
+    <dotlottie-wc 
+      class="lottie-background"
+      src="https://lottie.host/891c4524-90e8-48a0-b7d1-b77284a6647a/ktQbfpqH7I.lottie" 
+      autoplay 
+      loop>
+    </dotlottie-wc>
+    
+    <canvas id="gameCanvas" width="400" height="700"></canvas>
+
+    <div class="game-ui">
+      <div class="ui-top">
+        <div class="ui-left">
+          <div class="target-display">
+            <span class="target-label">Target:</span>
+            <span class="target-number" id="targetNumber">42</span>
+          </div>
+          <div class="current-display">
+            <span class="current-label">Current:</span>
+            <span class="current-number" id="currentNumber">0</span>
+          </div>
+        </div>
+
+        <div class="ui-right">
+          <div class="timer-display" id="timerDisplay">30</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="controls-hint" id="controlsHint">
+      Use ← → Arrow Keys or A/D to move left and right
+    </div>
+  </div>
+
+  <script>
+    const canvas = document.getElementById('gameCanvas');
+    const ctx = canvas.getContext('2d');
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const gameMode = urlParams.get('mode') || 'main';
+    const level = parseInt(urlParams.get('level')) || 1;
+
+    const LANE_WIDTH = canvas.width / 3;
+    const LANES = [LANE_WIDTH / 2, canvas.width / 2, canvas.width - LANE_WIDTH / 2];
+
+    let gameState = {
+      running: true,
+      paused: false,
+      currentLane: 1,
+      currentNumber: 0,
+      targetNumber: 42,
+      timeLeft: gameMode === 'main' ? 30 : 999,
+      scrollSpeed: 7,
+      score: 0,
+      operations: [],
+      obstacles: [],
+      whaleY: canvas.height + 100
+    };
+
+    const LEVEL_CONFIGS = {
+      1: { target: 20, operations: ['+5', '+10', '-3'], time: 30 },
+      2: { target: 42, operations: ['+5', '+10', '-3', 'x2'], time: 30 },
+      3: { target: 100, operations: ['+10', '+20', '-5', 'x2', '/2'], time: 40 }
+    };
+
+    const config = LEVEL_CONFIGS[level] || LEVEL_CONFIGS[1];
+    gameState.targetNumber = config.target;
+    gameState.timeLeft = gameMode === 'main' ? config.time : 999;
+
+    document.getElementById('targetNumber').textContent = gameState.targetNumber;
+    document.getElementById('currentNumber').textContent = gameState.currentNumber;
+    document.getElementById('timerDisplay').textContent = gameState.timeLeft;
+
+    if (gameMode === 'practice') {
+      document.getElementById('timerDisplay').style.display = 'none';
+    }
+
+    class Operation {
+      constructor(lane, type) {
+        this.lane = lane;
+        this.x = LANES[lane];
+        this.y = -50;
+        this.type = type;
+        this.width = 60;
+        this.height = 60;
+        this.collected = false;
+      }
+
+      update() {
+        this.y += gameState.scrollSpeed;
+      }
+
+      draw() {
+        if (this.collected) return;
+
+        ctx.fillStyle = 'rgba(152, 16, 250, 0.3)';
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.width / 2, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.strokeStyle = '#9810fa';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 24px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(this.type, this.x, this.y);
+      }
+
+      checkCollision(sharkX, sharkY) {
+        const dist = Math.sqrt((this.x - sharkX) ** 2 + (this.y - sharkY) ** 2);
+        return dist < (this.width / 2 + 30);
+      }
+
+      applyOperation() {
+        const num = parseInt(this.type.replace(/[^0-9]/g, ''));
+        if (this.type.includes('+')) {
+          gameState.currentNumber += num;
+        } else if (this.type.includes('-')) {
+          gameState.currentNumber = Math.max(0, gameState.currentNumber - num);
+        } else if (this.type.includes('x') || this.type.includes('*')) {
+          gameState.currentNumber *= num;
+        } else if (this.type.includes('/')) {
+          if (gameState.currentNumber > 0) {
+            gameState.currentNumber = Math.floor(gameState.currentNumber / num);
+          }
+        }
+        document.getElementById('currentNumber').textContent = gameState.currentNumber;
+      }
+    }
+
+    class Obstacle {
+      constructor(lane) {
+        this.lane = lane;
+        this.x = LANES[lane];
+        this.y = -50;
+        this.width = 50;
+        this.height = 50;
+      }
+
+      update() {
+        this.y += gameState.scrollSpeed;
+      }
+
+      draw() {
+        ctx.fillStyle = '#ff6b6b';
+        ctx.beginPath();
+        for (let i = 0; i < 8; i++) {
+          const angle = (i / 8) * Math.PI * 2;
+          const radius = i % 2 === 0 ? 25 : 15;
+          const x = this.x + Math.cos(angle) * radius;
+          const y = this.y + Math.sin(angle) * radius;
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+        }
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      checkCollision(sharkX, sharkY) {
+        const dist = Math.sqrt((this.x - sharkX) ** 2 + (this.y - sharkY) ** 2);
+        return dist < 40;
+      }
+    }
+
+    function spawnOperation() {
+      const lane = Math.floor(Math.random() * 3);
+      const type = config.operations[Math.floor(Math.random() * config.operations.length)];
+      gameState.operations.push(new Operation(lane, type));
+    }
+
+    function spawnObstacle() {
+      const lane = Math.floor(Math.random() * 3);
+      gameState.obstacles.push(new Obstacle(lane));
+    }
+
+    let sharkY = 550;
+    let sharkTargetX = LANES[1];
+    let sharkCurrentX = LANES[1];
+
+    function drawShark() {
+      sharkCurrentX += (sharkTargetX - sharkCurrentX) * 0.35;
+
+      ctx.fillStyle = '#00b4d8';
+      ctx.beginPath();
+      ctx.ellipse(sharkCurrentX, sharkY, 35, 25, 0, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#0096c7';
+      ctx.beginPath();
+      ctx.moveTo(sharkCurrentX + 20, sharkY);
+      ctx.lineTo(sharkCurrentX + 40, sharkY - 15);
+      ctx.lineTo(sharkCurrentX + 40, sharkY + 15);
+      ctx.closePath();
+      ctx.fill();
+
+      ctx.fillStyle = '#fff';
+      ctx.beginPath();
+      ctx.arc(sharkCurrentX - 10, sharkY - 8, 5, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#000';
+      ctx.beginPath();
+      ctx.arc(sharkCurrentX - 10, sharkY - 8, 2, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    function drawOcean() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.2)';
+      ctx.lineWidth = 2;
+      for (let i = 1; i < 3; i++) {
+        ctx.beginPath();
+        ctx.moveTo(i * LANE_WIDTH, 0);
+        ctx.lineTo(i * LANE_WIDTH, canvas.height);
+        ctx.stroke();
+      }
+    }
+
+    function drawWhale() {
+      if (gameMode === 'practice') return;
+
+      if (gameState.timeLeft < 10) {
+        gameState.whaleY -= 2;
+      }
+
+      if (gameState.whaleY < canvas.height - 50) {
+        ctx.fillStyle = '#1a1a1a';
+        ctx.beginPath();
+        ctx.ellipse(canvas.width / 2, gameState.whaleY, 60, 40, 0, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    let frameCount = 0;
+    let timerInterval;
+
+    function gameLoop() {
+      if (!gameState.running) return;
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      drawOcean();
+
+      frameCount++;
+
+      if (frameCount % 60 === 0) {
+        spawnOperation();
+      }
+
+      if (frameCount % 90 === 0) {
+        spawnObstacle();
+      }
+
+      gameState.operations = gameState.operations.filter(op => op.y < canvas.height + 100);
+      gameState.obstacles = gameState.obstacles.filter(obs => obs.y < canvas.height + 100);
+
+      gameState.operations.forEach(op => {
+        op.update();
+        op.draw();
+
+        if (!op.collected && op.checkCollision(sharkCurrentX, sharkY)) {
+          op.collected = true;
+          op.applyOperation();
+        }
+      });
+
+      gameState.obstacles.forEach(obs => {
+        obs.update();
+        obs.draw();
+
+        if (obs.checkCollision(sharkCurrentX, sharkY)) {
+          endGame(false, 'Hit obstacle!');
+        }
+      });
+
+      drawShark();
+      drawWhale();
+
+      if (gameState.currentNumber === gameState.targetNumber) {
+        endGame(true, 'Perfect!');
+      }
+
+      if (gameMode === 'main' && gameState.whaleY < sharkY) {
+        endGame(false, 'Caught by whale!');
+      }
+
+      requestAnimationFrame(gameLoop);
+    }
+
+    function startGame() {
+      setTimeout(() => {
+        document.getElementById('controlsHint').style.display = 'none';
+      }, 3000);
+
+      if (gameMode === 'main') {
+        timerInterval = setInterval(() => {
+          if (gameState.running) {
+            gameState.timeLeft--;
+            document.getElementById('timerDisplay').textContent = gameState.timeLeft;
+
+            if (gameState.timeLeft <= 0) {
+              endGame(false, 'Time up!');
+            }
+          }
+        }, 1000);
+      }
+
+      gameLoop();
+    }
+
+    function endGame(won, reason) {
+  gameState.running = false;
+  clearInterval(timerInterval);
+
+  const timeTaken = config.time - gameState.timeLeft;
+  const xpEarned = won ? 50 + (gameState.timeLeft * 2) : 10;
+  const mistakes = 0;
+  const pickups = gameState.operations.filter(op => op.collected).length;
+
+  if (won) {
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (currentUser._id) {
+      currentUser.xp = (currentUser.xp || 0) + xpEarned;
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }
+  }
+
+  window.location.href = `results.html?won=${won}&score=${gameState.currentNumber}&time=${timeTaken}&mistakes=${mistakes}&pickups=${pickups}&xp=${xpEarned}&mode=${gameMode}&level=${level}`;
+}
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A') {
+        if (gameState.currentLane > 0) {
+          gameState.currentLane--;
+          sharkTargetX = LANES[gameState.currentLane];
+        }
+      } else if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D') {
+        if (gameState.currentLane < 2) {
+          gameState.currentLane++;
+          sharkTargetX = LANES[gameState.currentLane];
+        }
+      }
+    });
+
+    startGame();
+  </script>
+</body>
+</html>

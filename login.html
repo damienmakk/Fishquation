@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login • Fishquation</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/account.css" />
+</head>
+<body class="landing">
+  <header class="topbar landing-topbar">
+    <a class="brand landing-brand" href="index.html" aria-label="Fishquation Home">
+      <img class="brand-logo" src="images/logo.png" alt="Fishquation logo" />
+      <span class="brand-text">Fishquation</span>
+    </a>
+  </header>
+
+  <main class="hero landing-hero">
+    <section class="hero-inner landing-hero-inner">
+      <div class="hero-visual landing-hero-visual" aria-hidden="true">
+        <img class="hero-logo" src="images/logo.png" alt="" />
+      </div>
+
+      <div class="hero-copy landing-hero-copy">
+        <h1 class="headline landing-headline">Welcome back</h1>
+
+        <form id="loginForm" class="cta landing-cta" autocomplete="on">
+          <input 
+            id="liEmail" 
+            name="email" 
+            type="email" 
+            placeholder="Email" 
+            class="auth-input email" 
+            required>
+
+          <input 
+            id="liPass" 
+            name="password" 
+            type="password" 
+            placeholder="Password" 
+            class="auth-input password" 
+            required>
+
+          <button class="btn btn-primary landing-btn-primary auth-btn" type="submit">
+            LOG IN
+          </button>
+
+          <a class="btn btn-outline landing-btn-outline auth-btn" href="signup.html">
+            CREATE AN ACCOUNT
+          </a>
+
+          <p id="formMsg" class="form-message"></p>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <script src="auth-pages.js"></script>
+</body>
+</html>

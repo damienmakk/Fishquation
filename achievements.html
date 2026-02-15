@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fishquation • Achievements</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/achievements.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-container">
+          <div class="logo-image">
+            <img src="images/logobgremove.png" alt="Fishquation Logo" />
+          </div>
+          <div class="logo-text">Fishquation</div>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="dashboard.html" class="nav-item">
+          <span class="nav-icon">▶</span>
+          <span>Play</span>
+        </a>
+        <a href="sandbox.html" class="nav-item">
+          <span class="nav-icon">🧪</span>
+          <span>Sandbox</span>
+        </a>
+        <a href="achievements.html" class="nav-item active">
+          <span class="nav-icon">🏆</span>
+          <span>Achievements</span>
+        </a>
+        <a href="store.html" class="nav-item">
+          <span class="nav-icon">🛒</span>
+          <span>Store</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+          <span class="nav-icon">👤</span>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <div class="top-bar">
+        <h1 class="page-title">Achievements</h1>
+        <div class="stats-bar">
+          <div class="stat-pill">
+            <span class="stat-icon">🔥</span>
+            <span id="streakCount">7</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-icon">🐟</span>
+            <span id="fishFlakes">2637</span>
+          </div>
+          <div class="stat-pill">
+            <span class="stat-icon">⚡</span>
+            <span id="totalXP">1669</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="page-subtitle">5/8 Unlocked</p>
+
+      <div class="achievements-grid">
+        <div class="achievement-card unlocked" onclick="showAchievementPopup('firstClear')">
+          <div class="achievement-icon orange">
+            <span>🏆</span>
+          </div>
+          <div class="achievement-name">First Clear</div>
+          <div class="achievement-status">Unlocked</div>
+        </div>
+
+        <div class="achievement-card unlocked" onclick="showAchievementPopup('perfectRun')">
+          <div class="achievement-icon blue">
+            <span>🎯</span>
+          </div>
+          <div class="achievement-name">Perfect Run</div>
+          <div class="achievement-status">Unlocked</div>
+        </div>
+
+        <div class="achievement-card unlocked" onclick="showAchievementPopup('streak3')">
+          <div class="achievement-icon orange">
+            <span>🔥</span>
+          </div>
+          <div class="achievement-name">Streak 3</div>
+          <div class="achievement-status">Unlocked</div>
+        </div>
+
+        <div class="achievement-card unlocked" onclick="showAchievementPopup('streak7')">
+          <div class="achievement-icon orange">
+            <span>🔥</span>
+          </div>
+          <div class="achievement-name">Streak 7</div>
+          <div class="achievement-status">Unlocked</div>
+        </div>
+
+        <div class="achievement-card unlocked" onclick="showAchievementPopup('waveSpecialist')">
+          <div class="achievement-icon green">
+            <span>🌊</span>
+          </div>
+          <div class="achievement-name">Wave Specialist</div>
+          <div class="achievement-status">Unlocked</div>
+        </div>
+
+        <div class="achievement-card locked">
+          <div class="achievement-icon purple">
+            <span>🏃</span>
+          </div>
+          <div class="achievement-name">Speedrunner</div>
+          <div class="achievement-status">2/5</div>
+        </div>
+
+        <div class="achievement-card locked">
+          <div class="achievement-icon blue">
+            <span>🔒</span>
+          </div>
+          <div class="achievement-name">Locked</div>
+          <div class="achievement-status">???</div>
+        </div>
+
+        <div class="achievement-card locked">
+          <div class="achievement-icon orange">
+            <span>🔒</span>
+          </div>
+          <div class="achievement-name">Locked</div>
+          <div class="achievement-status">???</div>
+        </div>
+      </div>
+    </main>
+
+    <nav class="bottom-nav d-md-none">
+      <a href="dashboard.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">▶</span>
+        <span>Play</span>
+      </a>
+      <a href="sandbox.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🧪</span>
+        <span>Sandbox</span>
+      </a>
+      <a href="achievements.html" class="bottom-nav-item active">
+        <span class="bottom-nav-icon">🏆</span>
+        <span>Achieve</span>
+      </a>
+      <a href="store.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🛒</span>
+        <span>Store</span>
+      </a>
+      <a href="profile.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">👤</span>
+        <span>Profile</span>
+      </a>
+    </nav>
+  </div>
+
+  <div class="achievement-popup" id="achievementPopup">
+    <div class="popup-content">
+      <button class="close-popup" id="closePopup">✕</button>
+      <div class="popup-icon" id="popupIcon">
+        <span>🏆</span>
+      </div>
+      <h2 class="popup-title" id="popupTitle">First Clear</h2>
+      <p class="popup-description" id="popupDescription">Complete your first level</p>
+      <div class="popup-reward">
+        <span class="reward-label">Reward</span>
+        <div class="reward-item">
+          <span class="reward-icon">🏅</span>
+          <span class="reward-text" id="rewardText">First Steps Badge</span>
+        </div>
+        <div class="reward-status" id="rewardStatus">Unlocked</div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
+    if (currentUser.streak) {
+      document.getElementById("streakCount").textContent = currentUser.streak;
+    }
+
+    if (currentUser.fishFlakes) {
+      document.getElementById("fishFlakes").textContent = currentUser.fishFlakes;
+    }
+
+    if (currentUser.xp) {
+      document.getElementById("totalXP").textContent = currentUser.xp;
+    }
+
+    const achievementData = {
+      firstClear: {
+        icon: '🏆',
+        iconColor: 'orange',
+        title: 'First Clear',
+        description: 'Complete your first level',
+        reward: 'First Steps Badge',
+        rewardIcon: '🏅',
+        status: 'Unlocked'
+      },
+      perfectRun: {
+        icon: '🎯',
+        iconColor: 'blue',
+        title: 'Perfect Run',
+        description: 'Complete a level with 0 mistakes',
+        reward: 'Perfectionist Badge',
+        rewardIcon: '🎯',
+        status: 'Unlocked'
+      },
+      streak3: {
+        icon: '🔥',
+        iconColor: 'orange',
+        title: 'Streak 3',
+        description: 'Maintain a 3-day streak',
+        reward: 'Fire Starter Badge',
+        rewardIcon: '🔥',
+        status: 'Unlocked'
+      },
+      streak7: {
+        icon: '🔥',
+        iconColor: 'orange',
+        title: 'Streak 7',
+        description: 'Maintain a 7-day streak',
+        reward: 'Week Warrior Badge',
+        rewardIcon: '🔥',
+        status: 'Unlocked'
+      },
+      waveSpecialist: {
+        icon: '🌊',
+        iconColor: 'green',
+        title: 'Wave Specialist',
+        description: 'Complete 10 sandbox waves',
+        reward: 'Wave Master Badge',
+        rewardIcon: '🌊',
+        status: 'Unlocked'
+      }
+    };
+
+    function showAchievementPopup(achievementId) {
+      const achievement = achievementData[achievementId];
+      if (!achievement) return;
+
+      document.getElementById('popupIcon').innerHTML = `<span>${achievement.icon}</span>`;
+      document.getElementById('popupIcon').className = `popup-icon ${achievement.iconColor}`;
+      document.getElementById('popupTitle').textContent = achievement.title;
+      document.getElementById('popupDescription').textContent = achievement.description;
+      document.getElementById('rewardText').innerHTML = `<span class="reward-icon">${achievement.rewardIcon}</span> ${achievement.reward}`;
+      document.getElementById('rewardStatus').textContent = achievement.status;
+
+      document.getElementById('achievementPopup').classList.add('active');
+    }
+
+    document.getElementById('closePopup').addEventListener('click', () => {
+      document.getElementById('achievementPopup').classList.remove('active');
+    });
+
+    document.getElementById('achievementPopup').addEventListener('click', (e) => {
+      if (e.target.id === 'achievementPopup') {
+        document.getElementById('achievementPopup').classList.remove('active');
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fishquation • Store</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/store.css" />
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-container">
+          <div class="logo-image">
+            <img src="images/logobgremove.png" alt="Fishquation Logo" />
+          </div>
+          <div class="logo-text">Fishquation</div>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <a href="dashboard.html" class="nav-item">
+          <span class="nav-icon">▶</span>
+          <span>Play</span>
+        </a>
+        <a href="sandbox.html" class="nav-item">
+          <span class="nav-icon">🧪</span>
+          <span>Sandbox</span>
+        </a>
+        <a href="achievements.html" class="nav-item">
+          <span class="nav-icon">🏆</span>
+          <span>Achievements</span>
+        </a>
+        <a href="store.html" class="nav-item active">
+          <span class="nav-icon">🛒</span>
+          <span>Store</span>
+        </a>
+        <a href="profile.html" class="nav-item">
+          <span class="nav-icon">👤</span>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </aside>
+
+    <main class="main-content">
+      <h1 class="page-title">Cosmetics Store</h1>
+
+      <div class="balance-card">
+        <div class="balance-icon">🐟</div>
+        <div class="balance-info">
+          <div class="balance-label">Your Balance</div>
+          <div class="balance-amount" id="fishFlakes">2637 Fish Flakes</div>
+        </div>
+      </div>
+
+      <div class="tabs-container">
+        <button class="tab-btn active" data-tab="skins">Skins</button>
+        <button class="tab-btn" data-tab="trails">Trails</button>
+        <button class="tab-btn" data-tab="badges">Badges</button>
+      </div>
+
+      <div class="preview-section">
+        <div class="preview-label">Preview</div>
+        <div class="preview-box" id="previewBox">
+          <iframe 
+            id="sketchfabIframe"
+            title="JEFF" 
+            frameborder="0" 
+            allowfullscreen 
+            mozallowfullscreen="true" 
+            webkitallowfullscreen="true" 
+            allow="autoplay; fullscreen; xr-spatial-tracking" 
+            xr-spatial-tracking 
+            execution-while-out-of-viewport 
+            execution-while-not-rendered 
+            web-share 
+            src="https://sketchfab.com/models/2d9f4dc6f5304ce5bc495891f641fbee/embed?autostart=1&transparent=1&ui_theme=dark">
+          </iframe>
+        </div>
+        <div class="preview-name">Your Fish</div>
+      </div>
+
+      <div class="skins-grid" id="skinsGrid">
+        <div class="skin-card owned" data-skin="classic">
+          <div class="skin-preview">
+            <img src="images/jeffdefaultskin.png" alt="Classic Shark" />
+          </div>
+          <div class="skin-info">
+            <div class="skin-name">Classic Shark</div>
+            <div class="skin-rarity common">Common</div>
+          </div>
+          <button class="skin-status owned-btn">Owned</button>
+          <button class="skin-action equip-btn">Equipped</button>
+        </div>
+
+        <div class="skin-card locked" data-skin="dolphin">
+          <div class="skin-preview">
+            <img src="images/dolphinshark.png" alt="Dolphin Shark" />
+          </div>
+          <div class="skin-info">
+            <div class="skin-name">Dolphin Shark</div>
+            <div class="skin-rarity rare">Rare</div>
+          </div>
+          <button class="skin-price">
+            <span class="price-icon">🐟</span>
+            <span class="price-amount">500</span>
+          </button>
+          <button class="skin-action locked-btn">
+            <span class="lock-icon">🔒</span>
+            Locked
+          </button>
+        </div>
+
+        <div class="skin-card locked" data-skin="winter">
+          <div class="skin-preview">
+            <img src="images/wintershark.png" alt="Winter Shark" />
+          </div>
+          <div class="skin-info">
+            <div class="skin-name">Winter Shark</div>
+            <div class="skin-rarity epic">Epic</div>
+          </div>
+          <button class="skin-price">
+            <span class="price-icon">🐟</span>
+            <span class="price-amount">1000</span>
+          </button>
+          <button class="skin-action locked-btn">
+            <span class="lock-icon">🔒</span>
+            Locked
+          </button>
+        </div>
+
+        <div class="skin-card locked" data-skin="venom">
+          <div class="skin-preview">
+            <img src="images/venomshark.png" alt="Venom Shark" />
+          </div>
+          <div class="skin-info">
+            <div class="skin-name">Venom Shark</div>
+            <div class="skin-rarity legendary">Legendary</div>
+          </div>
+          <button class="skin-price">
+            <span class="price-icon">🐟</span>
+            <span class="price-amount">2000</span>
+          </button>
+          <button class="skin-action locked-btn">
+            <span class="lock-icon">🔒</span>
+            Locked
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <nav class="bottom-nav d-md-none">
+      <a href="dashboard.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">▶</span>
+        <span>Play</span>
+      </a>
+      <a href="sandbox.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">⚗</span>
+        <span>Sandbox</span>
+      </a>
+      <a href="achievements.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">🏆</span>
+        <span>Achieve</span>
+      </a>
+      <a href="store.html" class="bottom-nav-item active">
+        <span class="bottom-nav-icon">🛒</span>
+        <span>Store</span>
+      </a>
+      <a href="profile.html" class="bottom-nav-item">
+        <span class="bottom-nav-icon">👤</span>
+        <span>Profile</span>
+      </a>
+    </nav>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    let currentUser = JSON.parse(localStorage.getItem("currentUser") || "{}");
+
+    if (!currentUser.ownedSkins) {
+      currentUser.ownedSkins = ['classic'];
+    }
+    if (!currentUser.equippedSkin) {
+      currentUser.equippedSkin = 'classic';
+    }
+    if (!currentUser.fishFlakes) {
+      currentUser.fishFlakes = 0;
+    }
+
+    const skinData = {
+      classic: { name: 'Classic Shark', image: 'images/jeffdefaultskin.png', price: 0 },
+      dolphin: { name: 'Dolphin Shark', image: 'images/dolphinshark.png', price: 500 },
+      winter: { name: 'Winter Shark', image: 'images/wintershark.png', price: 1000 },
+      venom: { name: 'Venom Shark', image: 'images/venomshark.png', price: 2000 }
+    };
+
+    function updateBalance() {
+      document.getElementById("fishFlakes").textContent = `${currentUser.fishFlakes} Fish Flakes`;
+    }
+
+    updateBalance();
+
+    function initializeSkins() {
+      document.querySelectorAll('.skin-card').forEach(card => {
+        const skinType = card.dataset.skin;
+        const isOwned = currentUser.ownedSkins.includes(skinType);
+        const isEquipped = currentUser.equippedSkin === skinType;
+
+        if (isOwned) {
+          card.classList.remove('locked');
+          card.classList.add('owned');
+          const priceBtn = card.querySelector('.skin-price');
+          const lockedBtn = card.querySelector('.locked-btn');
+          if (priceBtn) priceBtn.remove();
+          if (lockedBtn) lockedBtn.remove();
+          if (!card.querySelector('.owned-btn')) {
+            const ownedBtn = document.createElement('button');
+            ownedBtn.className = 'skin-status owned-btn';
+            ownedBtn.textContent = 'Owned';
+            card.appendChild(ownedBtn);
+          }
+          
+          if (!card.querySelector('.equip-btn')) {
+            const equipBtn = document.createElement('button');
+            equipBtn.className = 'skin-action equip-btn';
+            equipBtn.textContent = isEquipped ? 'Equipped' : 'Equip';
+            card.appendChild(equipBtn);
+          } else {
+            card.querySelector('.equip-btn').textContent = isEquipped ? 'Equipped' : 'Equip';
+          }
+        }
+      });
+    }
+
+    initializeSkins();
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+      });
+    });
+
+    document.querySelectorAll('.skin-card').forEach(card => {
+      card.addEventListener('click', (e) => {
+        if (e.target.closest('button')) return;
+        
+        const skinType = card.dataset.skin;
+        const previewBox = document.getElementById('previewBox');
+        const iframe = document.getElementById('sketchfabIframe');
+        
+        previewBox.innerHTML = '';
+        
+        if (skinType === 'classic') {
+          previewBox.appendChild(iframe);
+        } else {
+          const img = document.createElement('img');
+          img.style.width = '100%';
+          img.style.height = '100%';
+          img.style.objectFit = 'contain';
+          img.src = skinData[skinType].image;
+          img.alt = skinData[skinType].name;
+          previewBox.appendChild(img);
+        }
+
+        const skinName = card.querySelector('.skin-name').textContent;
+        document.querySelector('.preview-name').textContent = skinName;
+      });
+    });
+
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('.skin-price')) {
+        e.stopPropagation();
+        const btn = e.target.closest('.skin-price');
+        const card = btn.closest('.skin-card');
+        const skinType = card.dataset.skin;
+        const price = parseInt(btn.querySelector('.price-amount').textContent);
+        const skinName = card.querySelector('.skin-name').textContent;
+        
+        if (currentUser.fishFlakes >= price) {
+          if (confirm(`Purchase ${skinName} for ${price} Fish Flakes?`)) {
+            currentUser.fishFlakes -= price;
+
+            if (!currentUser.ownedSkins.includes(skinType)) {
+              currentUser.ownedSkins.push(skinType);
+            }
+          
+            localStorage.setItem('currentUser', JSON.stringify(currentUser));
+            updateBalance();
+            card.classList.remove('locked');
+            card.classList.add('owned');
+            btn.remove();
+            card.querySelector('.locked-btn').remove();
+            
+            const ownedBtn = document.createElement('button');
+            ownedBtn.className = 'skin-status owned-btn';
+            ownedBtn.textContent = 'Owned';
+            card.appendChild(ownedBtn);
+            
+            const equipBtn = document.createElement('button');
+            equipBtn.className = 'skin-action equip-btn';
+            equipBtn.textContent = 'Equip';
+            card.appendChild(equipBtn);
+          }
+        } else {
+          alert(`Not enough Fish Flakes! You need ${price - currentUser.fishFlakes} more.`);
+        }
+      }
+    });
+
+    document.addEventListener('click', (e) => {
+      if (e.target.classList.contains('equip-btn')) {
+        e.stopPropagation();
+        
+        const card = e.target.closest('.skin-card');
+        const skinType = card.dataset.skin;
+        
+        currentUser.equippedSkin = skinType;
+        localStorage.setItem('currentUser', JSON.stringify(currentUser));
+        
+        document.querySelectorAll('.equip-btn').forEach(btn => {
+          btn.textContent = 'Equip';
+        });
+ 
+        e.target.textContent = 'Equipped';
+        
+        alert(`${skinData[skinType].name} equipped! Check your profile to see it.`);
+      }
+    });
+  </script>
+</body>
+</html>

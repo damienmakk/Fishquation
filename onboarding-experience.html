@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Onboarding - Experience</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/onboarding.css" />
+</head>
+
+<body>
+  <div class="top-bar">
+    <div class="progress-container">
+      <button class="back-btn" id="backBtn" aria-label="Back">←</button>
+      <div class="progress-bar">
+        <div class="progress-fill step-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <main class="main-content">
+    <section class="question-section">
+      <div class="mascot-container">
+        <div class="mascot-circle">
+          <img src="images/jeffimage.png" alt="Fishquation mascot" />
+        </div>
+      </div>
+      <div class="speech-bubble">
+        <div class="speech-text">Do you have any math experience?</div>
+      </div>
+    </section>
+
+    <div class="options-list" id="expList">
+      <button class="option-card" type="button" data-exp="Beginner Math">
+        <div class="option-bars">
+          <div class="bars">
+            <div class="bar bar-1"></div>
+            <div class="bar bar-2"></div>
+            <div class="bar bar-3"></div>
+          </div>
+        </div>
+        <div class="option-text">Beginner Math</div>
+      </button>
+
+      <button class="option-card" type="button" data-exp="Advanced Math">
+        <div class="option-bars">
+          <div class="bars">
+            <div class="bar bar-1"></div>
+            <div class="bar bar-2"></div>
+            <div class="bar bar-3"></div>
+          </div>
+        </div>
+        <div class="option-text">Advanced Math</div>
+      </button>
+    </div>
+  </main>
+
+  <div class="bottom-bar">
+    <div class="bottom-container">
+      <button class="continue-btn" id="continueBtn" type="button" disabled>Continue</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const backBtn = document.getElementById("backBtn");
+    const continueBtn = document.getElementById("continueBtn");
+    const expList = document.getElementById("expList");
+
+    let selectedExp = localStorage.getItem("onboarding_experience") || "";
+
+    function refresh() {
+      [...expList.querySelectorAll(".option-card")].forEach(btn => {
+        btn.classList.toggle("selected", btn.dataset.exp === selectedExp);
+      });
+      continueBtn.disabled = !selectedExp;
+    }
+
+    expList.addEventListener("click", (e) => {
+      const btn = e.target.closest(".option-card");
+      if (!btn) return;
+      selectedExp = btn.dataset.exp;
+      localStorage.setItem("onboarding_experience", selectedExp);
+      refresh();
+    });
+
+    continueBtn.addEventListener("click", async () => {
+      if (!selectedExp) return;
+      
+      const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+      
+      if (!currentUser || !currentUser._id) {
+        console.error("No user logged in");
+        window.location.href = "login.html";
+        return;
+      }
+
+      try {
+        const course = localStorage.getItem("onboarding_course") || "Math";
+        
+        const updateRes = await fetch(`https://fishquation-0faf.restdb.io/rest/userinfo/${currentUser._id}`, {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            "x-apikey": "698e0628bf4bccf55753e4e1"
+          },
+          body: JSON.stringify({
+            onboardingComplete: true,
+            selectedCourse: course,
+            selectedExperience: selectedExp
+          })
+        });
+
+        if (updateRes.ok) {
+          const updatedUser = await updateRes.json();
+          localStorage.setItem("currentUser", JSON.stringify(updatedUser));
+          window.location.href = "dashboard.html";
+        } else {
+          console.error("Failed to update user");
+          window.location.href = "dashboard.html";
+        }
+        
+      } catch (error) {
+        console.error("Error updating onboarding status:", error);
+        window.location.href = "dashboard.html";
+      }
+    });
+
+    backBtn.addEventListener("click", () => history.back());
+
+    refresh();
+  </script>
+</body>
+</html>

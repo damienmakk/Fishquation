@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Fishquation • Results</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="css/results.css" />
+</head>
+<body>
+  <div class="results-container" id="resultsContainer">
+    <div class="stars-container" id="starsContainer">
+      <div class="star">⭐</div>
+      <div class="star">⭐</div>
+      <div class="star">⭐</div>
+    </div>
+
+    <h1 class="result-title" id="resultTitle">SUCCESS!</h1>
+    <p class="result-subtitle" id="resultSubtitle">Amazing run!</p>
+
+    <div class="retry-message" id="retryMessage" style="display: none;">
+      Don't give up! Try again and you'll get it! 💪
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon accuracy">🎯</div>
+          <div class="stat-label">Accuracy</div>
+        </div>
+        <div class="stat-value" id="accuracyStat">98%</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon time">⏱</div>
+          <div class="stat-label">Time</div>
+        </div>
+        <div class="stat-value" id="timeStat">0:10</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon mistakes">✖</div>
+          <div class="stat-label">Mistakes</div>
+        </div>
+        <div class="stat-value" id="mistakesStat">0</div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-header">
+          <div class="stat-icon pickups">🏆</div>
+          <div class="stat-label">Pickups</div>
+        </div>
+        <div class="stat-value" id="pickupsStat">7</div>
+      </div>
+    </div>
+
+    <div class="wave-code-section" id="waveCodeSection">
+      <div class="wave-code-label">Wave Code</div>
+      <div class="wave-code" id="waveCode">FQ-723812</div>
+      <div class="code-buttons">
+        <button class="code-btn" id="copyCodeBtn">
+          📋 Copy Code
+        </button>
+        <a href="sandbox.html" class="code-btn sandbox">
+          ⚗️ Sandbox
+        </a>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button class="action-btn primary-btn" id="continueBtn">Continue</button>
+      <button class="action-btn secondary-btn" id="retryBtn">Retry</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const won = urlParams.get('won') === 'true';
+    const score = parseInt(urlParams.get('score')) || 42;
+    const time = parseInt(urlParams.get('time')) || 10;
+    const mistakes = parseInt(urlParams.get('mistakes')) || 0;
+    const pickups = parseInt(urlParams.get('pickups')) || 7;
+    const xpEarned = parseInt(urlParams.get('xp')) || 50;
+    const mode = urlParams.get('mode') || 'main';
+    const level = urlParams.get('level') || '1';
+
+    const resultsContainer = document.getElementById('resultsContainer');
+    const starsContainer = document.getElementById('starsContainer');
+    const resultTitle = document.getElementById('resultTitle');
+    const resultSubtitle = document.getElementById('resultSubtitle');
+    const retryMessage = document.getElementById('retryMessage');
+    const waveCodeSection = document.getElementById('waveCodeSection');
+
+    if (!won) {
+      resultsContainer.classList.add('failure');
+      resultTitle.textContent = 'FAILED!';
+      resultSubtitle.textContent = 'Try again!';
+      retryMessage.style.display = 'block';
+      waveCodeSection.style.display = 'none';
+      
+      const stars = starsContainer.querySelectorAll('.star');
+      stars[0].textContent = '☆';
+      stars[1].textContent = '☆';
+      stars[2].textContent = '☆';
+    } else {
+      const stars = Math.min(3, Math.floor((100 - mistakes * 10) / 34) + 1);
+      const starElements = starsContainer.querySelectorAll('.star');
+      for (let i = 0; i < 3; i++) {
+        if (i >= stars) {
+          starElements[i].textContent = '☆';
+        }
+      }
+    }
+
+    const totalOperations = pickups + mistakes;
+    const accuracy = totalOperations > 0 ? Math.floor((pickups / totalOperations) * 100) : 100;
+    
+    document.getElementById('accuracyStat').textContent = `${accuracy}%`;
+    document.getElementById('timeStat').textContent = `${Math.floor(time / 60)}:${(time % 60).toString().padStart(2, '0')}`;
+    document.getElementById('mistakesStat').textContent = mistakes;
+    document.getElementById('pickupsStat').textContent = pickups;
+
+    const waveCode = `FQ-${Math.floor(Math.random() * 900000 + 100000)}`;
+    document.getElementById('waveCode').textContent = waveCode;
+
+    document.getElementById('copyCodeBtn').addEventListener('click', () => {
+      navigator.clipboard.writeText(waveCode);
+      const btn = document.getElementById('copyCodeBtn');
+      btn.textContent = '✓ Copied!';
+      setTimeout(() => {
+        btn.textContent = '📋 Copy Code';
+      }, 2000);
+    });
+
+    document.getElementById('continueBtn').addEventListener('click', () => {
+      window.location.href = 'dashboard.html';
+    });
+
+    document.getElementById('retryBtn').addEventListener('click', () => {
+      window.location.href = `game.html?mode=${mode}&level=${level}`;
+    });
+
+    const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+    if (won && currentUser._id) {
+      currentUser.xp = (currentUser.xp || 0) + xpEarned;
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+    }
+  </script>
+</body>
+</html>
